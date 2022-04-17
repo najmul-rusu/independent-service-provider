@@ -15,10 +15,12 @@ const Service = ({ service }) => {
 
                         </div>
                         {
-                            benefits.map(benefit => <Benefit benefit={benefit}></Benefit>)
+                            benefits.map(benefit =>
+                                <Benefit benefit={benefit}>
+                                </Benefit>)
                         }
                     </Card.Body>
-                    <div className='mx-auto w-500'>
+                    <div className='mx-auto'>
                         <Button className="text-white">Become A Member</Button>
                     </div>
                 </Card>
