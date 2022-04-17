@@ -1,10 +1,12 @@
 import React from 'react';
+import ActiveLink from '../../../Components/ActiveLink/ActiveLink';
 
 const Header = () => {
     return (
-        <header>
-            <h1>Header</h1>
-        </header>
+        <nav>
+            <ActiveLink to="/">Home</ActiveLink>
+            <ActiveLink to="/about">About</ActiveLink>
+        </nav>
     );
 };
 

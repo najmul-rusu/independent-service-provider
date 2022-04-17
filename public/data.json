@@ -1,0 +1,41 @@
+[
+    {
+        "id": "1",
+        "name": "STANDARD",
+        "price": 29,
+        "benefits": [
+            "Cardio",
+            "Swimming Pool",
+            "Gym",
+            "Group Lessons",
+            "Aerobics",
+            "Crossfit"
+        ]
+    },
+    {
+        "id": "2",
+        "name": "PREMIUM",
+        "price": 49,
+        "benefits": [
+            "Cardio",
+            "Swimming Pool",
+            "Gym",
+            "Group Lessons",
+            "Aerobics",
+            "Crossfit"
+        ]
+    },
+    {
+        "id": "3",
+        "name": "PLATINUM",
+        "price": 99,
+        "benefits": [
+            "Cardio",
+            "Swimming Pool",
+            "Gym",
+            "Group Lessons",
+            "Aerobics",
+            "Crossfit"
+        ]
+    }
+]
