@@ -9,6 +9,8 @@ const Header = () => {
             <ActiveLink to="/services">Services</ActiveLink>
             <ActiveLink to="/blog">Blog</ActiveLink>
             <ActiveLink to="/about">About</ActiveLink>
+            <ActiveLink to="/login">Login</ActiveLink>
+            <ActiveLink to="/register">Register</ActiveLink>
         </nav>
     );
 };
