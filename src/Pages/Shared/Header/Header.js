@@ -1,17 +1,45 @@
+import { signOut } from 'firebase/auth';
 import React from 'react';
-import ActiveLink from '../../../Components/ActiveLink/ActiveLink';
-import './Header.css'
+import { Container, Nav, Navbar,} from 'react-bootstrap';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { Link } from 'react-router-dom';
+import auth from '../../../firebase.init';
+import logo from '../../../Images/Logo.png'
+import './Header.css';
 
 const Header = () => {
+    const [user] = useAuthState(auth)
+    const handleSignOut =() =>{
+        signOut(auth)
+    }
     return (
-        <nav className='d-flex justify-content-center p-5'>
-            <ActiveLink to="/">Home</ActiveLink>
-            <ActiveLink to="/services">Services</ActiveLink>
-            <ActiveLink to="/blog">Blog</ActiveLink>
-            <ActiveLink to="/about">About</ActiveLink>
-            <ActiveLink to="/login">Login</ActiveLink>
-            <ActiveLink to="/register">Register</ActiveLink>
-        </nav>
+        <div>
+            <Navbar collapseOnSelect sticky='top' expand="lg" bg="black" variant="dark">
+                <Container>
+                    <Navbar.Brand as={Link} to="/">
+                        <img height={50} src={logo} alt="" />
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <Navbar.Collapse id="responsive-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link href="home#services">Services</Nav.Link>
+                            <Nav.Link href="/blog">Blogs</Nav.Link>
+                            <Nav.Link as={Link} to="about">About</Nav.Link>
+                        </Nav>
+                        <Nav>
+                            {
+                                user?
+                                    <button className='btn btn-link text-white text-decoration-none' onClick={handleSignOut}>Sign Out</button>
+                                :
+                                
+                                <Nav.Link as={Link} to="login">
+                                Login
+                            </Nav.Link>}
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        </div>
     );
 };
 

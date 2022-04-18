@@ -1,42 +1,85 @@
 import React, { useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword, } from 'react-firebase-hooks/auth';
+import auth from '../../../firebase.init';
+import Loading from '../../Shared/Loading/Loading';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { ToastContainer, toast } from 'react-toastify';
 import { Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import SocialLogin from '../Social/SocialLogin';
 
 const Login = () => {
-    const emailRef = useRef('');
-    const passRef = useRef('');
+    const emailRef = useRef('')
+    const passwordRef = useRef('')
+    const navigate = useNavigate();
 
+    const location = useLocation();
+    let from = location.state?.from?.pathname || "/";
+    let errorElement;
+    const [
+        useSignInWithEmailAndPassword,
+        user,
+        loading,
+        error,
+    ] = useSignInWithEmailAndPassword(auth);
+
+
+    const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+    if (loading) {
+        return <Loading></Loading>
+    }
+    if (user) {
+        navigate(from, { replace: true });
+    }
+    if (error) {
+        errorElement = <div>
+            <p className='text-danger'> Error: {error.message}</p>
+        </div>
+    }
     const handleSubmit = event => {
         event.preventDefault();
         const email = emailRef.current.value;
-        const pass = passRef.current.value;
-
-        console.log(email, pass)
+        const password = passwordRef.current.value;
+        signInWithEmailAndPassword(email, password)
     }
-    const navigateRegister = useNavigate()
+    const navigateRegister = event => {
+        navigate('/register')
+    }
+
+    const resetPassword = async () => {
+        const email = emailRef.current.value;
+        if (email) {
+            await sendPasswordResetEmail(email);
+            toast('Sent email');
+        }
+        else{
+            toast('Please enter your email address')
+        }
+    }
+
     return (
-        <div className='container w-50 mx-auto'>
+        <div className=' w-50 mx-auto my-4'>
             <h2 className='text-center'>Please Login</h2>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
+
                     <Form.Control ref={emailRef} type="email" placeholder="Enter email" required />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control ref={passRef} type="password" placeholder="Password" required />
+                    <Form.Control ref={passwordRef} type="password" placeholder="Password" required />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
+                <Button variant="primary w-50 mx-auto d-block mb-2" type="submit">
+                    Login
                 </Button>
             </Form>
-            <p>New to EveDiva? <Link to='/register' className='text-danger pe-auto text-decoration-none' onClick={navigateRegister}>Please Register</Link></p>
+            {errorElement}
+            <p>You don't have an account? <Link to='/register ' className='text-danger pe-auto text-decoration-none ' onClick={navigateRegister}>Please Register</Link></p>
+            <p>Forget your password? <Button to='/register ' className='btn btn-link text-danger pe-auto text-decoration-none ' onClick={resetPassword}>Reset Password</Button></p>
+            <SocialLogin></SocialLogin>
+            <ToastContainer />
         </div>
+
     );
 };
 
